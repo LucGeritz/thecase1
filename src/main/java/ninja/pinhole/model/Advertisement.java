@@ -42,9 +42,6 @@ public class Advertisement implements Pickable {
         return String.format("%-20s",this.name);
     }
 
-    public static void main(String[] args) {
-        Advertisement a = Advertisement.builder().build();
-    }
 }
 
 

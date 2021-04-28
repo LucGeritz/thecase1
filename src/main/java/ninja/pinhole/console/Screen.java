@@ -27,7 +27,7 @@ public abstract class Screen {
         this.lis = container.get("lis");
     }
 
-    public Option getOption() {
+    protected Option getOption() {
         String line;
 
         do {

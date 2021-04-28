@@ -1,15 +1,15 @@
 package ninja.pinhole.screens;
 
 import ninja.pinhole.console.*;
-import ninja.pinhole.model.Advertisement;
-import ninja.pinhole.model.AdvertisementDao;
-import ninja.pinhole.model.User;
-import ninja.pinhole.model.UserDao;
+import ninja.pinhole.model.*;
 import ninja.pinhole.services.Container;
 import ninja.pinhole.services.Launchable;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -19,8 +19,9 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
 
     private final String optionName = "1";
     private final String optionUser = "2";
-    private final String optionDescr = "3";
-    private final String optionPrice = "4";
+    private final String optionCat = "3";
+    private final String optionDescr = "4";
+    private final String optionPrice = "5";
     private final String optionExit = "x";
     private final String optionSave = "s";
 
@@ -29,7 +30,7 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
     private EntityManager em;
 
     public AdvertisementEditScreen(Container container, UserIO userIO, Advertisement advertisement) {
-        super(container,"Wijzigen advertentie " + advertisement.getId(), userIO);
+        super(container, "Wijzigen advertentie " + advertisement.getId(), userIO);
         this.advertisement = advertisement;
         options = getOptions();
     }
@@ -51,6 +52,9 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
                     break;
                 case optionUser:
                     pickUser();
+                    break;
+                case optionCat:
+                    pickCategory();
                     break;
                 case optionPrice:
                     processPrice();
@@ -90,10 +94,13 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
         io.setValue(advertisement.getPrice().toString());
         options.put(optionPrice, io);
 
-        var o = new Option(optionUser, "Gebruiker");
+        var o = new Option(optionCat, "Categorie");
+        o.setValue(((AdvertisementCategory)advertisement).getCatName().toString());
+        options.put(optionCat, o);
+
+        o = new Option(optionUser, "Gebruiker");
         o.setValue(advertisement.getUser().getId().toString());
         options.put(optionUser, o);
-
 
         options.put(optionSave, new Option(optionSave, "Save"));
         options.put(optionExit, new Option(optionExit, "Exit"));
@@ -102,7 +109,7 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
     }
 
     private void pickUser() {
-        var ep = new EntityPicker<User>(container,"Kies gebruiker",
+        var ep = new EntityPicker<User>(container, "Kies gebruiker",
                 userIO,
                 new UserDao(getEntityManager()),
                 Launchable.NEEDSLOGIN,
@@ -112,6 +119,22 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
             User u = ep.getPicked();
             options.get(optionUser).setValue(u.getId().toString());
         }
+    }
+
+    private void pickCategory() {
+
+        Iterable items = Arrays.asList(ServiceCategory.values());
+        if(advertisement instanceof Product){
+            items = Arrays.asList(ProductCategory.values());
+        }
+
+        var ap = new ArrayPicker(items, container, "Kies categorie", userIO);
+        if(launch(ap) && ap.hasPicked()){
+            // update categorie
+            options.get(optionCat).setValue(((Integer)ap.getPickedItem()).toString());
+        }
+
+
     }
 
     private boolean processPrice() {
@@ -155,7 +178,7 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
         return pdao;
     }
 
-    private EntityManager getEntityManager(){
+    private EntityManager getEntityManager() {
         return em == null ? container.get("em") : em;
     }
 

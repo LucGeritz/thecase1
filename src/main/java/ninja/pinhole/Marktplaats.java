@@ -1,6 +1,7 @@
 package ninja.pinhole;
 
 import ninja.pinhole.console.AnsiConsole;
+import ninja.pinhole.console.ArrayPicker;
 import ninja.pinhole.screens.MainScreen;
 import ninja.pinhole.services.Container;
 import ninja.pinhole.services.LoginService;
@@ -39,7 +40,7 @@ public class Marktplaats {
         // "lis" LogInServer
         container.<LoginService>set("lis",
                 () -> new LoginService(
-                    container.get("em")
+                        container.get("em")
                 )
         );
 

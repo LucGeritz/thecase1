@@ -49,12 +49,16 @@ class LoginScreenE2E {
 
     @Test
     void WhenUserLogsInWithValidCredentialsThenUserIsLoggedIn() {
+        // given: user not logged in
+
+        // when: user logs in with valid vredentials
         AutoConsole console = setupLoginBuffer("user2", "geheim2");
         MainScreen ms = new MainScreen(container, console);
         LoginService lis = container.get("lis");
         Assertions.assertThat(lis.isLoggedIn()).isFalse();
-        // start flow
         ms.show();
+
+        // then: user is logged in
         Assertions.assertThat(lis.isLoggedIn()).isTrue();
         Assertions.assertThat(lis.getCurrentUserAlias()).isEqualTo("user2");
     }
@@ -71,20 +75,26 @@ class LoginScreenE2E {
 
     @Test
     void WhenUserLogsInWithValidCredentialsButUserIsBlockedThenUserIsNotLoggedIn() {
+        // given: user is logged out
 
+        // when: user logs in with credentials of blocked user
         AutoConsole console = setupLoginBuffer("user3", "geheim3");
         MainScreen ms = new MainScreen(container, console);
-        // start flow
         ms.show();
+
+        // then: user is not logged in
         Assertions.assertThat(container.<LoginService>get("lis").isLoggedIn()).isFalse();
     }
+
     @Test
     void WhenLoggedInUserLogsOutThenUserIsLoggedOut() {
+
+        // given: user is logged in
         LoginService lis = container.get("lis");
         lis.login("user1", "geheim1");
-
         Assertions.assertThat(lis.isLoggedIn()).isTrue();
 
+        // when: user logs out
         AutoConsole console = new AutoConsole();
         console.buffer("1") // pick login
                 .buffer("L") // do login/logout
@@ -95,6 +105,7 @@ class LoginScreenE2E {
         MainScreen ms = new MainScreen(container, console);
         ms.show();
 
+        // then: user is logged out
         Assertions.assertThat(lis.isLoggedIn()).isFalse();
 
     }

@@ -1,8 +1,10 @@
 package ninja.pinhole.model;
 
+import ninja.pinhole.console.Pickable;
+
 import java.util.Random;
 
-public enum ProductCategory {
+public enum ProductCategory  {
 
     PET("Huisdier"),
     HOBBY("Hobby"),
@@ -19,4 +21,5 @@ public enum ProductCategory {
         int number = new Random().nextInt(values().length);
         return values()[number];
     }
-}
+
+ }
