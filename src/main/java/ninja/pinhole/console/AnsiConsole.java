@@ -2,7 +2,7 @@ package ninja.pinhole.console;
 
 import java.util.Scanner;
 
-public class AnsiConsole implements UserInterface {
+public class AnsiConsole implements UserIO {
 
     private void printString(Attrib attrib, String text) {
         System.out.println(attrib.value + text + Attrib.DEFAULT.value);

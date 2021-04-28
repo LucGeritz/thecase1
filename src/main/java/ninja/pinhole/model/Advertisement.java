@@ -1,13 +1,14 @@
 package ninja.pinhole.model;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import ninja.pinhole.console.Pickable;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
         @NamedQuery(name = "Adv.findById", query = "SELECT a FROM Advertisement a WHERE a.id = :id"),
         @NamedQuery(name = "Adv.findByName", query = "SELECT a FROM Advertisement a WHERE a.name = :name"),
 })
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Advertisement implements Pickable {
     @Id
     @GeneratedValue
@@ -37,7 +39,11 @@ public class Advertisement implements Pickable {
 
     @Override
     public String getRowAsString() {
-        return this.name;
+        return String.format("%-20s",this.name);
+    }
+
+    public static void main(String[] args) {
+        Advertisement a = Advertisement.builder().build();
     }
 }
 

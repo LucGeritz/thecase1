@@ -87,7 +87,7 @@ class LoginScreenE2E {
 
         AutoConsole console = new AutoConsole();
         console.buffer("1") // pick login
-                .buffer("L") // pick logout
+                .buffer("L") // do login/logout
                 .buffer("x") // exit log screen
                 .buffer("x") // exit main screen
                 .setWait(waitTime);

@@ -2,7 +2,7 @@ package ninja.pinhole.screens;
 
 import ninja.pinhole.console.Option;
 import ninja.pinhole.console.Screen;
-import ninja.pinhole.console.UserInterface;
+import ninja.pinhole.console.UserIO;
 import ninja.pinhole.services.Container;
 
 import java.util.Map;
@@ -18,8 +18,8 @@ public class MainScreen extends Screen {
 
     private LoginScreen ls;
 
-    public MainScreen(Container container, UserInterface userInterface) {
-        super(container, "Welkom!", userInterface);
+    public MainScreen(Container container, UserIO userIO) {
+        super(container, "Welkom!", userIO);
         this.options = getOptions();
     }
 
@@ -35,7 +35,7 @@ public class MainScreen extends Screen {
 
     private LoginScreen getLoginScreen() {
         if (this.ls == null) {
-            ls = new LoginScreen(container, this.userInterface);
+            ls = new LoginScreen(container, this.userIO);
         }
         return this.ls;
     }
@@ -60,10 +60,10 @@ public class MainScreen extends Screen {
                     launch(getLoginScreen());
                     break;
                 case optionAdverts:
-                    launch(new AdvertisementScreen(container, this.userInterface));
+                    launch(new AdvertisementScreen(container, this.userIO));
                     break;
                 case optionUsers:
-                    launch(new UserScreen(container, this.userInterface));
+                    launch(new UserScreen(container, this.userIO));
                     break;
             }
         }

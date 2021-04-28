@@ -1,9 +1,6 @@
 package ninja.pinhole.utility;
 
-import ninja.pinhole.model.Advertisement;
-import ninja.pinhole.model.AdvertisementDao;
-import ninja.pinhole.model.User;
-import ninja.pinhole.model.UserDao;
+import ninja.pinhole.model.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -29,6 +26,8 @@ public class DbFiller {
         ad.removeAll();
         ud.removeAll();
 
+
+        // U S E R S
         String[] userNames = new String[]{
                 "admin", "archie", "betsy", "rolph", "dewy", "fritz", "carla"
         };
@@ -51,28 +50,43 @@ public class DbFiller {
         List<User> users = ud.findAll();
         users.forEach(System.out::println);
 
-        //----«ADVERTS»-----------
+        // A D V E R T S
         String[] advNames = new String[]{
-                "Oma fiets", "Naaimachine", "Kladblokken",
-                "Handboog met pijlen", "Luchtbuks", "Winterjas",
-                "Strijkkwartet", "Voetbalspel", "Poker kaarten",
-                "Broodmachine", "Rashond", "WiFi-Router"
+                "Oma fiets", "Zolder cleaning", "Kladblokken",
+                "Kinderfeestje?", "Luchtbuks", "Bijles Java",
+                "Strijkkwartet", "Uitlaatservice", "Poker kaarten",
+                "Broodbakken", "Rashond", "Internet problemen"
         };
 
         String descr = " is zo goed als nieuw. Zien is kopen!";
 
         int userCount = 0;
         for (String name : advNames) {
+
             String longDescr = "Deze ".concat(name).concat(descr);
-            var p = Advertisement.builder().
-                    price(BigDecimal.valueOf(157.23))
-                    .name(name)
-                    .description(longDescr)
-                    .build();
-            ad.insert(p);
-            long userId = userIds.get(userCount++%userIds.size());
-            p.setUser(ud.find(userId));
-            ad.update(p);
+            Advertisement a;
+            if ((userCount % 2) == 0) {
+                // on evens let's create a product
+                a = Product.builder()
+                        .category(ProductCategory.random())
+                        .name(name)
+                        .description(longDescr)
+                        .price(BigDecimal.valueOf(157.23))
+                        .build();
+            } else {
+                // on odds let's create a service
+                a = Service.builder()
+                        .category(ServiceCategory.random())
+                        .name(name)
+                        .description(longDescr)
+                        .price(BigDecimal.valueOf(157.23))
+                        .build();
+            }
+
+            ad.insert(a);
+            long userId = userIds.get(userCount++ % userIds.size());
+            a.setUser(ud.find(userId));
+            ad.update(a);
         }
 
         ad.findAll().forEach(System.out::println);

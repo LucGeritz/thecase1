@@ -10,7 +10,7 @@ import java.util.TreeMap;
 
 public abstract class Screen {
 
-    protected UserInterface userInterface;
+    protected UserIO userIO;
     protected final int screenWidth = 40;
     protected String generalMsg;
     protected Map<String, Option> options = new TreeMap<>();
@@ -19,10 +19,10 @@ public abstract class Screen {
     protected Container container;
     private LoginService lis;
 
-    public Screen(Container container, String title, UserInterface userInterface) {
+    public Screen(Container container, String title, UserIO userIO) {
         this.generalMsg = "";
         this.title = title;
-        this.userInterface = userInterface;
+        this.userIO = userIO;
         this.container = container;
         this.lis = container.get("lis");
     }
@@ -32,7 +32,7 @@ public abstract class Screen {
 
         do {
             this.displayMenu();
-            line = userInterface.get();
+            line = userIO.get();
             if (this.validate(line)) {
                 break;
             }
@@ -53,16 +53,16 @@ public abstract class Screen {
 
         // printer.clear();
 
-        userInterface.printTitle(this.screenWidth, this.title,
+        userIO.printTitle(this.screenWidth, this.title,
                 lis.isLoggedIn() ? lis.getCurrentUserAlias() : "gast");
 
         for (var menuEntry : this.options.entrySet()) {
-            userInterface.print(menuEntry.getValue().toString());
+            userIO.print(menuEntry.getValue().toString());
             menuEntry.getValue().resetMessage();
         }
 
-        userInterface.printError(this.generalMsg);
-        userInterface.printInfo("Geef keuze in");
+        userIO.printError(this.generalMsg);
+        userIO.printInfo("Geef keuze in");
 
         this.generalMsg = "";
 

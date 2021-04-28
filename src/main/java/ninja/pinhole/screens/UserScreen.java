@@ -3,7 +3,7 @@ package ninja.pinhole.screens;
 import ninja.pinhole.console.EntityPicker;
 import ninja.pinhole.console.Option;
 import ninja.pinhole.console.Screen;
-import ninja.pinhole.console.UserInterface;
+import ninja.pinhole.console.UserIO;
 import ninja.pinhole.model.User;
 import ninja.pinhole.model.UserDao;
 import ninja.pinhole.services.Container;
@@ -22,8 +22,8 @@ public class UserScreen extends Screen implements Launchable {
     public final String optionBlock = "4";
     public final String optionExit = "x";
 
-    public UserScreen(Container container, UserInterface userInterface) {
-        super(container,"Gebruikers", userInterface);
+    public UserScreen(Container container, UserIO userIO) {
+        super(container,"Gebruikers", userIO);
         this.options = getOptions();
     }
 
@@ -90,7 +90,7 @@ public class UserScreen extends Screen implements Launchable {
 
         // todo use getEntityPicker() Structure
         var ep = new EntityPicker<User>(container, "Blokkeer / Déblokkeer gebruiker",
-                userInterface,
+                userIO,
                 new UserDao(em),
                 Launchable.NEEDSLOGIN,
                 Launchable.NEEDSADMIN);

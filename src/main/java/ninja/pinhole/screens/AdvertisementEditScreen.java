@@ -28,8 +28,8 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
     private UserDao udao;
     private EntityManager em;
 
-    public AdvertisementEditScreen(Container container, UserInterface userInterface, Advertisement advertisement) {
-        super(container,"Wijzigen advertentie " + advertisement.getId(), userInterface);
+    public AdvertisementEditScreen(Container container, UserIO userIO, Advertisement advertisement) {
+        super(container,"Wijzigen advertentie " + advertisement.getId(), userIO);
         this.advertisement = advertisement;
         options = getOptions();
     }
@@ -78,15 +78,15 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
     private Map<String, Option> getOptions() {
         Map<String, Option> options = new TreeMap<>();
 
-        var io = new InputOption(optionName, "Naam", userInterface);
+        var io = new InputOption(optionName, "Naam", userIO);
         io.setValue(advertisement.getName());
         options.put(optionName, io);
 
-        io = new InputOption(optionDescr, "Omschrijving", userInterface);
+        io = new InputOption(optionDescr, "Omschrijving", userIO);
         io.setValue(advertisement.getDescription());
         options.put(optionDescr, io);
 
-        io = new InputOption(optionPrice, "Prijs", userInterface);
+        io = new InputOption(optionPrice, "Prijs", userIO);
         io.setValue(advertisement.getPrice().toString());
         options.put(optionPrice, io);
 
@@ -103,7 +103,7 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
 
     private void pickUser() {
         var ep = new EntityPicker<User>(container,"Kies gebruiker",
-                userInterface,
+                userIO,
                 new UserDao(getEntityManager()),
                 Launchable.NEEDSLOGIN,
                 Launchable.NEEDSADMIN);

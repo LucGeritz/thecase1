@@ -3,7 +3,7 @@ package ninja.pinhole.screens;
 import ninja.pinhole.console.EntityPicker;
 import ninja.pinhole.console.Option;
 import ninja.pinhole.console.Screen;
-import ninja.pinhole.console.UserInterface;
+import ninja.pinhole.console.UserIO;
 import ninja.pinhole.model.Advertisement;
 import ninja.pinhole.model.AdvertisementDao;
 import ninja.pinhole.services.Container;
@@ -20,8 +20,8 @@ public class AdvertisementScreen extends Screen implements Launchable {
     public final String optionDelete = "3";
     public final String optionExit = "x";
 
-    public AdvertisementScreen(Container container, UserInterface userInterface) {
-        super(container,"Advertenties", userInterface);
+    public AdvertisementScreen(Container container, UserIO userIO) {
+        super(container,"Advertenties", userIO);
         this.options = getOptions();
     }
 
@@ -82,12 +82,12 @@ public class AdvertisementScreen extends Screen implements Launchable {
     private void editAdvert() {
 
         var ep = new EntityPicker<Advertisement>(container,"Kies advertentie",
-                userInterface,
+                userIO,
                 new AdvertisementDao(container.<EntityManager>get("em")),
                 Launchable.NEEDSLOGIN,
                 Launchable.NEEDSADMIN);
         if (launch(ep) && ep.hasPicked()) {
-            launch(new AdvertisementEditScreen(container, userInterface, ep.getPicked()));
+            launch(new AdvertisementEditScreen(container, userIO, ep.getPicked()));
         }
     }
 }

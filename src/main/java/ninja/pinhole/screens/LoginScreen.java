@@ -3,7 +3,7 @@ package ninja.pinhole.screens;
 import ninja.pinhole.console.InputOption;
 import ninja.pinhole.console.Option;
 import ninja.pinhole.console.Screen;
-import ninja.pinhole.console.UserInterface;
+import ninja.pinhole.console.UserIO;
 import ninja.pinhole.services.Container;
 import ninja.pinhole.services.Launchable;
 import ninja.pinhole.services.LoginService;
@@ -20,8 +20,8 @@ public class LoginScreen extends Screen implements Launchable {
 
     private LoginService lis;
 
-    public LoginScreen(Container container, UserInterface userInterface) {
-        super(container,"Log in / Log uit", userInterface);
+    public LoginScreen(Container container, UserIO userIO) {
+        super(container,"Log in / Log uit", userIO);
         this.options = getOptions();
     }
 
@@ -97,8 +97,8 @@ public class LoginScreen extends Screen implements Launchable {
     private Map<String, Option> getOptions() {
 
         Map<String, Option> options = new TreeMap<>();
-        options.put(optionName, new InputOption(optionName, "Naam", userInterface));
-        options.put(optionPw, new InputOption(optionPw, "Wachtwoord", userInterface).setSecret());
+        options.put(optionName, new InputOption(optionName, "Naam", userIO));
+        options.put(optionPw, new InputOption(optionPw, "Wachtwoord", userIO).setSecret());
         options.put(optionLog, new Option(optionLog, "Log in"));
         options.put(optionExit, new Option(optionExit, "Exit"));
 
