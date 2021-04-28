@@ -1,7 +1,6 @@
 package ninja.pinhole;
 
 import ninja.pinhole.console.AnsiConsole;
-import ninja.pinhole.console.ArrayPicker;
 import ninja.pinhole.screens.MainScreen;
 import ninja.pinhole.services.Container;
 import ninja.pinhole.services.LoginService;

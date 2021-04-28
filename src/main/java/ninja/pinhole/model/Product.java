@@ -18,16 +18,16 @@ public class Product extends Advertisement implements AdvertisementCategory {
 
     @Override
     public String getRowAsString(){
-        return(super.getRowAsString().concat(" Product ").concat(category.value));
+        return(super.getRowAsString().concat(" Product ").concat(category.toString()));
     }
-
 
     @Override
-    public String getCatName() {
-        return category.value;
+    public void setCategory(String catName) {
+        category  = ProductCategory.valueOf(catName);
     }
 
-
-
-
+    @Override
+    public String getCategory(){
+        return category.toString();
+    }
 }

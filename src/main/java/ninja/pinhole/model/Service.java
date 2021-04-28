@@ -15,12 +15,16 @@ public class Service extends Advertisement implements AdvertisementCategory {
 
     @Override
     public String getRowAsString(){
-        return(super.getRowAsString().concat(" Service ").concat(category.value));
+        return(super.getRowAsString().concat(" Service ").concat(category.toString()));
     }
 
     @Override
-    public String getCatName() {
-        return category.value;
+    public void setCategory(String catName) {
+        category  = ServiceCategory.valueOf(catName);
+    }
+
+    public String getCategory(){
+        return category.toString();
     }
 
 }

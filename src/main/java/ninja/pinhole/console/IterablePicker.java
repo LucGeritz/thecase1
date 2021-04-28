@@ -6,13 +6,11 @@ import ninja.pinhole.services.Launchable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ArrayPicker extends Screen implements Launchable {
+public class IterablePicker extends Screen implements Launchable {
 
-    private final static int nonePicked = -1;
+    private Option pickedOption;
 
-    private int pickedItem = nonePicked;
-
-    public ArrayPicker(Iterable rawOptions, Container container, String title, UserIO userIO) {
+    public IterablePicker(Iterable rawOptions, Container container, String title, UserIO userIO) {
         super(container, title, userIO);
         this.options = getOptions(rawOptions);
     }
@@ -22,7 +20,7 @@ public class ArrayPicker extends Screen implements Launchable {
 
         var picked = getOption();
         // If choice was not exit then store the entity picked for retrieval by caller
-        pickedItem = picked.getId() == "x" ? null : Integer.parseInt(picked.getId());
+        pickedOption = picked;
 
     }
 
@@ -41,12 +39,12 @@ public class ArrayPicker extends Screen implements Launchable {
         return options;
     }
 
-    public int getPickedItem() {
-        return pickedItem;
+    public Option getPickedOption() {
+        return pickedOption;
     }
 
     public boolean hasPicked() {
-        return pickedItem != nonePicked;
+        return pickedOption != null;
     }
 
     @Override

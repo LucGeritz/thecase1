@@ -4,12 +4,10 @@ import ninja.pinhole.console.*;
 import ninja.pinhole.model.*;
 import ninja.pinhole.services.Container;
 import ninja.pinhole.services.Launchable;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -95,7 +93,7 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
         options.put(optionPrice, io);
 
         var o = new Option(optionCat, "Categorie");
-        o.setValue(((AdvertisementCategory)advertisement).getCatName().toString());
+        o.setValue(((AdvertisementCategory)advertisement).getCategory());
         options.put(optionCat, o);
 
         o = new Option(optionUser, "Gebruiker");
@@ -128,13 +126,12 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
             items = Arrays.asList(ProductCategory.values());
         }
 
-        var ap = new ArrayPicker(items, container, "Kies categorie", userIO);
+        var ap = new IterablePicker(items, container, "Kies categorie", userIO);
         if(launch(ap) && ap.hasPicked()){
-            // update categorie
-            options.get(optionCat).setValue(((Integer)ap.getPickedItem()).toString());
+            // update category
+            Option o = ap.getPickedOption();
+            options.get(optionCat).setValue(o.getName());
         }
-
-
     }
 
     private boolean processPrice() {
@@ -189,6 +186,7 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
         p.setName(options.get(optionName).getValue());
         p.setDescription(options.get(optionDescr).getValue());
         p.setPrice(new BigDecimal(options.get(optionPrice).getValue()));
+        ((AdvertisementCategory)p).setCategory(options.get(optionCat).getValue());
 
         long userId = Long.parseLong(options.get(optionUser).getValue());
         User u = getUserDao().find(userId);

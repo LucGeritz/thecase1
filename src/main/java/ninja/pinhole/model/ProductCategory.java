@@ -6,16 +6,10 @@ import java.util.Random;
 
 public enum ProductCategory  {
 
-    PET("Huisdier"),
-    HOBBY("Hobby"),
-    CLOTHING("Kleding"),
-    FOOD("Voedsel");
-
-    public final String value;
-
-    ProductCategory(String value) {
-        this.value = value;
-    }
+    Pet,
+    Hobby,
+    Clothing,
+    Food;
 
     public static ProductCategory random(){
         int number = new Random().nextInt(values().length);
