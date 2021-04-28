@@ -3,9 +3,9 @@ package ninja.pinhole.screens;
 import ninja.pinhole.console.EntityPicker;
 import ninja.pinhole.console.Option;
 import ninja.pinhole.console.Screen;
-import ninja.pinhole.console.UserInterface;
-import ninja.pinhole.model.Product;
-import ninja.pinhole.model.ProductDao;
+import ninja.pinhole.console.UserIO;
+import ninja.pinhole.model.Advertisement;
+import ninja.pinhole.model.AdvertisementDao;
 import ninja.pinhole.services.Container;
 import ninja.pinhole.services.Launchable;
 
@@ -13,15 +13,15 @@ import javax.persistence.EntityManager;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ProductScreen extends Screen implements Launchable {
+public class AdvertisementScreen extends Screen implements Launchable {
 
     public final String optionAdd = "1";
     public final String optionEdit = "2";
     public final String optionDelete = "3";
     public final String optionExit = "x";
 
-    public ProductScreen(Container container, UserInterface userInterface) {
-        super(container,"Artikelen", userInterface);
+    public AdvertisementScreen(Container container, UserIO userIO) {
+        super(container,"Advertenties", userIO);
         this.options = getOptions();
     }
 
@@ -44,7 +44,7 @@ public class ProductScreen extends Screen implements Launchable {
                     generalMsg = "Nog niet geïmplementeerd";
                     break;
                 case optionEdit:
-                    editProduct();
+                    editAdvert();
                     break;
             }
         }
@@ -77,19 +77,18 @@ public class ProductScreen extends Screen implements Launchable {
     }
 
     /**
-     * Let user pick a product, if picked launch product edit screen
+     * Let user pick a advert, if picked launch advert edit screen
      */
-    private void editProduct() {
+    private void editAdvert() {
 
-        var ep = new EntityPicker<Product>(container,"Kies artikel",
-                userInterface,
-                new ProductDao(container.<EntityManager>get("em")),
+        var ep = new EntityPicker<Advertisement>(container,"Kies advertentie",
+                userIO,
+                new AdvertisementDao(container.<EntityManager>get("em")),
                 Launchable.NEEDSLOGIN,
                 Launchable.NEEDSADMIN);
         if (launch(ep) && ep.hasPicked()) {
-            launch(new ProductEditScreen(container, userInterface, ep.getPicked()));
+            launch(new AdvertisementEditScreen(container, userIO, ep.getPicked()));
         }
     }
-
 }
 

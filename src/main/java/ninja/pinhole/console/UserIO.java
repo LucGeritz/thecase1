@@ -1,6 +1,6 @@
 package ninja.pinhole.console;
 
-public interface UserInterface {
+public interface UserIO {
     // Print text as "standard"
     void print(String text);
     // Print text as "error"

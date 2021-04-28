@@ -6,28 +6,28 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Log4j2
-public class ProductDao implements Dao<Product>{
+public class AdvertisementDao implements Dao<Advertisement>{
 
     private EntityManager em;
 
-    public ProductDao(EntityManager em) {
+    public AdvertisementDao(EntityManager em) {
         this.em = em;
     }
 
     /**
      * Find all users.
      */
-    public List<Product> findAll() {
+    public List<Advertisement> findAll() {
         log.debug("Finding all users");
-        List<Product> prods = em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
-        log.debug(String.format("Found %s products", prods.size()));
+        List<Advertisement> prods = em.createQuery("SELECT p FROM Advertisement p", Advertisement.class).getResultList();
+        log.debug(String.format("Found %s adverts", prods.size()));
         return prods;
     }
 
     /**
      * Insert a single user.
      */
-    public void insert(Product p) {
+    public void insert(Advertisement p) {
         log.debug(String.format("Inserting %s", p.toString()));
         em.getTransaction().begin();
         em.persist(p);
@@ -38,29 +38,29 @@ public class ProductDao implements Dao<Product>{
      * Remove all users!
      */
     public void removeAll() {
-        log.debug(String.format("Removing all products!"));
+        log.debug(String.format("Removing all adverts!"));
         em.getTransaction().begin();
-        em.createQuery("DELETE FROM Product").executeUpdate();
+        em.createQuery("DELETE FROM Advertisement").executeUpdate();
         em.getTransaction().commit();
     }
 
-    public void update(Product p) {
+    public void update(Advertisement p) {
         em.getTransaction().begin();
         em.persist(p);
         em.getTransaction().commit();
     }
 
-    public Product find(long id){
-        List<Product> pp = em.createNamedQuery("Product.findById", Product.class)
+    public Advertisement find(long id){
+        List<Advertisement> pp = em.createNamedQuery("Adv.findById", Advertisement.class)
                 .setParameter("id", id)
                 .getResultList();
         return pp.size() > 0 ? pp.get(0) : null;
     }
 
     // Use a named query
-    public List<Product> findByName(String name) {
+    public List<Advertisement> findByName(String name) {
         // Note use of parameter! https://www.baeldung.com/jpa-query-parameters
-        return em.createNamedQuery("Product.findByName", Product.class)
+        return em.createNamedQuery("Adv.findByName", Advertisement.class)
                 .setParameter("name", name)
                 .getResultList();
     }

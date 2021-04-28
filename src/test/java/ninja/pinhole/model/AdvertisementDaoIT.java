@@ -8,9 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import java.sql.SQLException;
 
-class ProductDaoIT {
+class AdvertisementDaoIT {
 
-    private static ProductDao target;
+    private static AdvertisementDao target;
     private static EntityManager em;
     private static int initialRecCount = 10;
 
@@ -19,13 +19,13 @@ class ProductDaoIT {
         em = Persistence
                 .createEntityManagerFactory("H2-thecase")
                 .createEntityManager();
-        target = new ProductDao(em);
+        target = new AdvertisementDao(em);
         initDB();
     }
 
     @Test
-    void whenProductSearchedOnExistingIdThenProductIsReturned() {
-        var p = target.findByName("product1").get(0);
+    void whenAdvertSearchedOnExistingIdThenAdvertIsReturned() {
+        var p = target.findByName("advert1").get(0);
         long id = p.getId();
         p = target.find(id);
 
@@ -34,35 +34,35 @@ class ProductDaoIT {
     }
 
     @Test
-    void whenProductSearchedOnNonExistingIdThenNullIsReturned() {
+    void whenAdvertSearchedOnNonExistingIdThenNullIsReturned() {
 
         var p = target.find(345345345);
         Assertions.assertThat(p).isNull();
     }
 
     @Test
-    void whenProductSearchedOnExistingNameThenProductIsReturned() {
-        var p = target.findByName("product1").get(0);
+    void whenAdvertSearchedOnExistingNameThenAdvertIsReturned() {
+        var p = target.findByName("advert1").get(0);
         Assertions.assertThat(p).isNotNull();
-        Assertions.assertThat(p.getName()).isEqualTo("product1");
+        Assertions.assertThat(p.getName()).isEqualTo("advert1");
     }
 
     @Test
-    void whenFindAllThenListOfProductsIsReturned() {
+    void whenFindAllThenListOfAdvertsIsReturned() {
         var pp = target.findAll();
         Assertions.assertThat(pp.size()).isGreaterThanOrEqualTo(initialRecCount);
     }
 
     @Test
-    void whenProductInsertedThenFindAllReturnsMore() {
+    void whenAdvertInsertedThenFindAllReturnsMore() {
         int count1 = target.findAll().size();
-        var p = Product.builder().name("Jo!").build();
+        var p = Advertisement.builder().name("Jo!").build();
         target.insert(p);
         Assertions.assertThat(target.findAll().size()).isGreaterThan(count1);
     }
 
     @Test
-    void whenProductSearchedOnnONExistingNameThenEmptyListIsReturned() {
+    void whenAdvertSearchedOnNoneExistingNameThenEmptyListIsReturned() {
         var pp = target.findByName("zzzzzzz");
         Assertions.assertThat(pp.size()).isZero();
     }
@@ -73,7 +73,7 @@ class ProductDaoIT {
         var ud = new UserDao(em);
         ud.removeAll();
 
-        // make a user product belongs to
+        // make a user advert belongs to
         User u = User.builder()
                 .alias("user1")
                 .blocked(false)
@@ -83,9 +83,9 @@ class ProductDaoIT {
         ud.insert(u);
 
         for (var i = 0; i < initialRecCount; i++) {
-            Product p = Product.builder()
-                    .name("product" + i)
-                    .description("product" + i + " is very good.")
+            Advertisement p = Advertisement.builder()
+                    .name("advert" + i)
+                    .description("advert" + i + " is very good.")
                     .user(u)
                     .build();
             target.insert(p);

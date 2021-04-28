@@ -21,12 +21,12 @@ public class EntityPicker<T extends Pickable> extends Screen implements Launchab
     private RecordFilter<T> recordFilter;
 
     public EntityPicker(Container container, String title,
-                        UserInterface userInterface,
+                        UserIO userIO,
                         Dao dao,
                         boolean needsLogin,
                         boolean needsAdmin
     ) {
-        super(container, title, userInterface);
+        super(container, title, userIO);
         this.dao = dao;
         this.needsAdmin = needsAdmin;
         this.needsLogin = needsLogin;

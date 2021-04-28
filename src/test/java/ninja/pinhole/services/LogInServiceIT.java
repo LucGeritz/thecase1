@@ -1,6 +1,6 @@
 package ninja.pinhole.services;
 
-import ninja.pinhole.model.ProductDao;
+import ninja.pinhole.model.AdvertisementDao;
 import ninja.pinhole.model.User;
 import ninja.pinhole.model.UserDao;
 import org.assertj.core.api.Assertions;
@@ -106,7 +106,7 @@ class LogInServiceIT {
 
     private static void initDB() {
 
-        new ProductDao(em).removeAll();
+        new AdvertisementDao(em).removeAll();
         new UserDao(em).removeAll();
 
         User u;

@@ -5,10 +5,10 @@ package ninja.pinhole.console;
  * Input value is stored in value field.
  */
 public class InputOption extends Option {
-    private UserInterface userInterface;
-    public InputOption(String id, String name, UserInterface userInterface) {
+    private UserIO userIO;
+    public InputOption(String id, String name, UserIO userIO) {
         super(id, name);
-        this.userInterface = userInterface;
+        this.userIO = userIO;
     }
 
     @Override
@@ -16,8 +16,8 @@ public class InputOption extends Option {
      * If a InputOption is picked we'll ask the user for an input
      */
     protected void afterPick() {
-        userInterface.printInfo("Geef waarde voor " + this.getName() + " ");
-        this.setValue(userInterface.get());
+        userIO.printInfo("Geef waarde voor " + this.getName() + " ");
+        this.setValue(userIO.get());
     }
 
 }

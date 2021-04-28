@@ -18,6 +18,7 @@ public class Marktplaats {
         Container container = setup();
 
         // temporary hack to avoid having to log in!
+        // REMOVE FOR DEMO!!
         container.<LoginService>get("lis").login("admin", "admin");
 
         new MainScreen(container, new AnsiConsole()).show();
@@ -38,7 +39,7 @@ public class Marktplaats {
         // "lis" LogInServer
         container.<LoginService>set("lis",
                 () -> new LoginService(
-                    container.get("em")
+                        container.get("em")
                 )
         );
 

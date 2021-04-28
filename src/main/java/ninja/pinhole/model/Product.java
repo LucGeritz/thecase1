@@ -1,44 +1,33 @@
 package ninja.pinhole.model;
 
-import lombok.*;
-import ninja.pinhole.console.Pickable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
+import javax.persistence.Entity;
+import java.util.Arrays;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
-        @NamedQuery(name = "Product.findByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
-})
-public class Product implements Pickable {
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    private String name;
-    private String description;
-
-    @ManyToOne (fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private User user;
-
-    // Converter voor twee decimalen?
-    private BigDecimal price;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+public class Product extends Advertisement implements AdvertisementCategory {
+    private ProductCategory category;
 
     @Override
-    public String getIdAsString() {
-        return this.id+"";
+    public String getRowAsString(){
+        return(super.getRowAsString().concat(" Product ").concat(category.toString()));
     }
 
     @Override
-    public String getRowAsString() {
-        return this.name;
+    public void setCategory(String catName) {
+        category  = ProductCategory.valueOf(catName);
+    }
+
+    @Override
+    public String getCategory(){
+        return category.toString();
     }
 }
-
-

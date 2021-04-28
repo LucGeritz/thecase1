@@ -34,7 +34,7 @@ public class User implements Pickable {
     private boolean isAdmin;
 
     @OneToMany(mappedBy = "user")
-    private List<Product> products;
+    private List<Advertisement> advertisements;
 
     @Override
     public String getIdAsString() {
