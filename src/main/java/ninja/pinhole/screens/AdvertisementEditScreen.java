@@ -121,16 +121,12 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
 
     private void pickCategory() {
 
-        Iterable items = Arrays.asList(ServiceCategory.values());
-        if(advertisement instanceof Product){
-            items = Arrays.asList(ProductCategory.values());
-        }
+        Iterable items = ((AdvertisementCategory)advertisement).getEnumItems();
 
         var ap = new IterablePicker(items, container, "Kies categorie", userIO);
         if(launch(ap) && ap.hasPicked()){
-            // update category
-            Option o = ap.getPickedOption();
-            options.get(optionCat).setValue(o.getName());
+            // update category in option list
+            options.get(optionCat).setValue(ap.getPickedOption().getName());
         }
     }
 
