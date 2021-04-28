@@ -1,8 +1,8 @@
 package ninja.pinhole.screens;
 
 import ninja.pinhole.console.*;
-import ninja.pinhole.model.Product;
-import ninja.pinhole.model.ProductDao;
+import ninja.pinhole.model.Advertisement;
+import ninja.pinhole.model.AdvertisementDao;
 import ninja.pinhole.model.User;
 import ninja.pinhole.model.UserDao;
 import ninja.pinhole.services.Container;
@@ -13,9 +13,9 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ProductEditScreen extends Screen implements Launchable {
+public class AdvertisementEditScreen extends Screen implements Launchable {
 
-    private Product product;
+    private Advertisement advertisement;
 
     private final String optionName = "1";
     private final String optionUser = "2";
@@ -24,13 +24,13 @@ public class ProductEditScreen extends Screen implements Launchable {
     private final String optionExit = "x";
     private final String optionSave = "s";
 
-    private ProductDao pdao;
+    private AdvertisementDao pdao;
     private UserDao udao;
     private EntityManager em;
 
-    public ProductEditScreen(Container container, UserInterface userInterface, Product product) {
-        super(container,"Wijzigen artikel " + product.getId(), userInterface);
-        this.product = product;
+    public AdvertisementEditScreen(Container container, UserInterface userInterface, Advertisement advertisement) {
+        super(container,"Wijzigen advertentie " + advertisement.getId(), userInterface);
+        this.advertisement = advertisement;
         options = getOptions();
     }
 
@@ -47,7 +47,7 @@ public class ProductEditScreen extends Screen implements Launchable {
                     show = false;
                     break;
                 case optionSave:
-                    save(product);
+                    save(advertisement);
                     break;
                 case optionUser:
                     pickUser();
@@ -79,19 +79,19 @@ public class ProductEditScreen extends Screen implements Launchable {
         Map<String, Option> options = new TreeMap<>();
 
         var io = new InputOption(optionName, "Naam", userInterface);
-        io.setValue(product.getName());
+        io.setValue(advertisement.getName());
         options.put(optionName, io);
 
         io = new InputOption(optionDescr, "Omschrijving", userInterface);
-        io.setValue(product.getDescription());
+        io.setValue(advertisement.getDescription());
         options.put(optionDescr, io);
 
         io = new InputOption(optionPrice, "Prijs", userInterface);
-        io.setValue(product.getPrice().toString());
+        io.setValue(advertisement.getPrice().toString());
         options.put(optionPrice, io);
 
         var o = new Option(optionUser, "Gebruiker");
-        o.setValue(product.getUser().getId().toString());
+        o.setValue(advertisement.getUser().getId().toString());
         options.put(optionUser, o);
 
 
@@ -148,9 +148,9 @@ public class ProductEditScreen extends Screen implements Launchable {
         return udao;
     }
 
-    private ProductDao getProductDao() {
+    private AdvertisementDao getAdvertDao() {
         if (pdao == null) {
-            pdao = new ProductDao(getEntityManager());
+            pdao = new AdvertisementDao(getEntityManager());
         }
         return pdao;
     }
@@ -159,7 +159,7 @@ public class ProductEditScreen extends Screen implements Launchable {
         return em == null ? container.get("em") : em;
     }
 
-    private void save(Product p) {
+    private void save(Advertisement p) {
 
         if (!this.processPrice()) return;
 
@@ -171,7 +171,7 @@ public class ProductEditScreen extends Screen implements Launchable {
         User u = getUserDao().find(userId);
         p.setUser(u);
 
-        getProductDao().update(p);
+        getAdvertDao().update(p);
 
     }
 }

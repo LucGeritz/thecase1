@@ -11,8 +11,9 @@ import java.util.TreeMap;
 public class MainScreen extends Screen {
 
     private final String optionLogin = "1";
-    private final String optionProducts = "2";
+    private final String optionAdverts = "2";
     private final String optionUsers = "3";
+
     private final String optionExit = "x";
 
     private LoginScreen ls;
@@ -25,7 +26,7 @@ public class MainScreen extends Screen {
     private Map<String, Option> getOptions() {
         Map<String, Option> options = new TreeMap<>();
         options.put(optionLogin, new Option(optionLogin, "Log in / Log uit"));
-        options.put(optionProducts, new Option(optionProducts, "Artikelen"));
+        options.put(optionAdverts, new Option(optionAdverts, "Advertenties"));
         options.put(optionUsers, new Option(optionUsers, "Gebruikers"));
         options.put(optionExit, new Option(optionExit, "Exit"));
 
@@ -58,8 +59,8 @@ public class MainScreen extends Screen {
                 case optionLogin:
                     launch(getLoginScreen());
                     break;
-                case optionProducts:
-                    launch(new ProductScreen(container, this.userInterface));
+                case optionAdverts:
+                    launch(new AdvertisementScreen(container, this.userInterface));
                     break;
                 case optionUsers:
                     launch(new UserScreen(container, this.userInterface));

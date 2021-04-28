@@ -1,7 +1,7 @@
 package ninja.pinhole.utility;
 
-import ninja.pinhole.model.Product;
-import ninja.pinhole.model.ProductDao;
+import ninja.pinhole.model.Advertisement;
+import ninja.pinhole.model.AdvertisementDao;
 import ninja.pinhole.model.User;
 import ninja.pinhole.model.UserDao;
 
@@ -22,11 +22,11 @@ public class DbFiller {
      */
     public static void main(String[] args) {
 
-        ProductDao pd = new ProductDao(em);
+        AdvertisementDao ad = new AdvertisementDao(em);
         UserDao ud = new UserDao(em);
 
-        // note must remove products first!
-        pd.removeAll();
+        // note must remove adverts first!
+        ad.removeAll();
         ud.removeAll();
 
         String[] userNames = new String[]{
@@ -51,8 +51,8 @@ public class DbFiller {
         List<User> users = ud.findAll();
         users.forEach(System.out::println);
 
-        //----«PRODUCTS»-----------
-        String[] prodNames = new String[]{
+        //----«ADVERTS»-----------
+        String[] advNames = new String[]{
                 "Oma fiets", "Naaimachine", "Kladblokken",
                 "Handboog met pijlen", "Luchtbuks", "Winterjas",
                 "Strijkkwartet", "Voetbalspel", "Poker kaarten",
@@ -62,20 +62,20 @@ public class DbFiller {
         String descr = " is zo goed als nieuw. Zien is kopen!";
 
         int userCount = 0;
-        for (String name : prodNames) {
+        for (String name : advNames) {
             String longDescr = "Deze ".concat(name).concat(descr);
-            var p = Product.builder().
+            var p = Advertisement.builder().
                     price(BigDecimal.valueOf(157.23))
                     .name(name)
                     .description(longDescr)
                     .build();
-            pd.insert(p);
+            ad.insert(p);
             long userId = userIds.get(userCount++%userIds.size());
             p.setUser(ud.find(userId));
-            pd.update(p);
+            ad.update(p);
         }
 
-        pd.findAll().forEach(System.out::println);
+        ad.findAll().forEach(System.out::println);
 
     }
 }

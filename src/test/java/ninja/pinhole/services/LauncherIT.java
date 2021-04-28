@@ -1,7 +1,7 @@
 package ninja.pinhole.services;
 
 import lombok.extern.log4j.Log4j2;
-import ninja.pinhole.model.ProductDao;
+import ninja.pinhole.model.AdvertisementDao;
 import ninja.pinhole.model.User;
 import ninja.pinhole.model.UserDao;
 import org.assertj.core.api.Assertions;
@@ -91,7 +91,7 @@ class LauncherIT {
         User u;
 
         // make sure we start with empty db
-        new ProductDao(em).removeAll();
+        new AdvertisementDao(em).removeAll();
         new UserDao(em).removeAll();
 
         em.getTransaction().begin();

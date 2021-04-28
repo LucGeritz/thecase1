@@ -1,7 +1,7 @@
 package ninja.pinhole.screens;
 
 import ninja.pinhole.console.AutoConsole;
-import ninja.pinhole.model.ProductDao;
+import ninja.pinhole.model.AdvertisementDao;
 import ninja.pinhole.model.User;
 import ninja.pinhole.model.UserDao;
 import ninja.pinhole.services.Container;
@@ -117,9 +117,9 @@ class LoginScreenE2E {
     }
 
     private static void initDB() {
-        // This is not about products but still I have to remove
+        // This is not about adverts but still I have to remove
         // them if any are there to remove all users!
-        new ProductDao(container.get("em")).removeAll();
+        new AdvertisementDao(container.get("em")).removeAll();
 
         UserDao ud = new UserDao(container.get("em"));
         ud.removeAll();

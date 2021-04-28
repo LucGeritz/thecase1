@@ -12,10 +12,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
-        @NamedQuery(name = "Product.findByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
+        @NamedQuery(name = "Adv.findById", query = "SELECT a FROM Advertisement a WHERE a.id = :id"),
+        @NamedQuery(name = "Adv.findByName", query = "SELECT a FROM Advertisement a WHERE a.name = :name"),
 })
-public class Product implements Pickable {
+public class Advertisement implements Pickable {
     @Id
     @GeneratedValue
     private Long id;
