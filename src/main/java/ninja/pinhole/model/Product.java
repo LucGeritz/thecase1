@@ -27,11 +27,6 @@ public class Product extends Advertisement implements AdvertisementCategory {
     }
 
     @Override
-    public Class getEnumClass() {
-        return ProductCategory.class;
-    }
-
-    @Override
     public Iterable getEnumItems() {
         return Arrays.asList(ProductCategory.values());
     }

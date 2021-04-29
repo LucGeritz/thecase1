@@ -70,16 +70,16 @@ public class DbFiller {
             String descr = "";
             switch (new Random().nextInt(4)) {
                 case 0:
-                    descr = " is zo goed als niew. Sien is kopen!";
+                    descr = " is zo goed als nieuw.";
                     break;
                 case 1:
-                    descr = " hept altijd binnen gestaant";
+                    descr = " heeft altijd binnen gestaan.";
                     break;
                 case 2:
-                    descr = " gaat weg tegen elluk aanmerkelijk bod";
+                    descr = " gaat weg tegen het hoogste bod.";
                     break;
                 case 3:
-                    descr = " is ook vor op de kemping";
+                    descr = " is ook geschikt voor op de camping";
                     break;
             }
             descr = "Deze ".concat(name).concat(descr);
@@ -109,6 +109,5 @@ public class DbFiller {
         }
 
         ad.findAll().forEach(System.out::println);
-
     }
 }

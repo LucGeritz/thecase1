@@ -88,7 +88,7 @@ public class UserScreen extends Screen implements Launchable {
         String currentAlias = container.<LoginService>get("lis").getCurrentUserAlias();
         EntityManager em = container.get("em");
 
-        // todo use getEntityPicker() Structure
+        // @todo use builder
         var ep = new EntityPicker<User>(container, "Blokkeer / Déblokkeer gebruiker",
                 userIO,
                 new UserDao(em),

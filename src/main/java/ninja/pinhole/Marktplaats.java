@@ -19,9 +19,12 @@ public class Marktplaats {
 
         // temporary hack to avoid having to log in!
         // REMOVE FOR DEMO!!
-        container.<LoginService>get("lis").login("admin", "admin");
+        // container.<LoginService>get("lis").login("admin", "admin");
 
-        new MainScreen(container, new AnsiConsole()).show();
+        var ac = new AnsiConsole();
+        new MainScreen(container, ac).show();
+        ac.clear();
+        ac.printInfo("Bye!");
     }
 
     private Container setup() {

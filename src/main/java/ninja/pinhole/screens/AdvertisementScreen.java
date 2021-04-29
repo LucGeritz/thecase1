@@ -21,7 +21,7 @@ public class AdvertisementScreen extends Screen implements Launchable {
     public final String optionExit = "x";
 
     public AdvertisementScreen(Container container, UserIO userIO) {
-        super(container,"Advertenties", userIO);
+        super(container, "Advertenties", userIO);
         this.options = getOptions();
     }
 
@@ -81,13 +81,22 @@ public class AdvertisementScreen extends Screen implements Launchable {
      */
     private void editAdvert() {
 
-        var ep = new EntityPicker<Advertisement>(container,"Kies advertentie",
-                userIO,
-                new AdvertisementDao(container.<EntityManager>get("em")),
-                Launchable.NEEDSLOGIN,
-                Launchable.NEEDSADMIN);
+//        var ep = new EntityPicker<Advertisement>(container,"Kies advertentie",
+//                userIO,
+//                new AdvertisementDao(container.<EntityManager>get("em")),
+//                Launchable.NEEDSLOGIN,
+//                Launchable.NEEDSADMIN);
+
+        var ep = new EntityPicker.Builder<Advertisement>(container)
+                .withUserIO(userIO)
+                .withTitle("Kies advertentie")
+                .withDao(new AdvertisementDao(container.<EntityManager>get("em")))
+                .needsAdmin(Launchable.NEEDSADMIN)
+                .needsLogin(Launchable.NEEDSLOGIN)
+                .build();
+
         if (launch(ep) && ep.hasPicked()) {
-            launch(new AdvertisementEditScreen(container, userIO, ep.getPicked()));
+            launch(new AdvertisementEditScreen(container, userIO, (Advertisement) ep.getPicked()));
         }
     }
 }

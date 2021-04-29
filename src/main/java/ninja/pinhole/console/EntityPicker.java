@@ -21,6 +21,16 @@ public class EntityPicker<T extends Pickable> extends Screen implements Launchab
     private boolean needsLogin;
     private RecordFilter<T> recordFilter;
 
+    public EntityPicker(Builder ep) {
+        super(ep.container, ep.title, ep.userIO);
+        this.recordFilter = ep.recordFilter;
+        this.needsAdmin = ep.needsAdmin;
+        this.needsLogin = ep.needsLogin;
+        this.dao = ep.dao;
+        this.title = ep.title;
+    }
+
+    // @Todo too many parameters. Replace by Builder
     public EntityPicker(Container container,
                         String title,
                         UserIO userIO,
@@ -32,7 +42,6 @@ public class EntityPicker<T extends Pickable> extends Screen implements Launchab
         this.dao = dao;
         this.needsAdmin = needsAdmin;
         this.needsLogin = needsLogin;
-        this.recordFilter = (T rec) -> true;
     }
 
     @Override
@@ -80,6 +89,11 @@ public class EntityPicker<T extends Pickable> extends Screen implements Launchab
      */
     private Map<String, Option> getOptions() {
 
+        // If no recordfilter specified assume we want all
+        if (recordFilter == null) {
+            this.recordFilter = (T rec) -> true;
+        }
+
         List<T> rows = dao.findAll();
 
         Map<String, Option> options = new TreeMap<>();
@@ -94,6 +108,62 @@ public class EntityPicker<T extends Pickable> extends Screen implements Launchab
         options.put(optionExit, new Option(optionExit, "Exit"));
 
         return options;
+    }
+
+    public static class Builder<T> {
+
+        /*
+        This set are all possible parameters for EntityPicker
+         */
+        private Dao dao;
+        private boolean needsAdmin;
+        private boolean needsLogin;
+        private RecordFilter<T> recordFilter;
+        private Container container;
+        private String title;
+        private UserIO userIO;
+
+        /**
+         * The builder contains all mandatory parameters
+         */
+        public Builder(Container container) {
+            this.container = container;
+        }
+
+        public Builder withFilter(RecordFilter<T> recordFilter) {
+            this.recordFilter = recordFilter;
+            return this;
+        }
+
+        public Builder withDao(Dao dao) {
+            this.dao = dao;
+            return this;
+        }
+
+        public Builder withUserIO(UserIO userIO) {
+            this.userIO = userIO;
+            return this;
+        }
+
+        public Builder withTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder needsAdmin(boolean needsAdmin) {
+            this.needsAdmin = true;
+            return this;
+        }
+
+        public Builder needsLogin(boolean needsLogin) {
+            this.needsLogin = true;
+            return this;
+        }
+
+        public EntityPicker build() {
+            return new EntityPicker(this);
+        }
+
     }
 
 }

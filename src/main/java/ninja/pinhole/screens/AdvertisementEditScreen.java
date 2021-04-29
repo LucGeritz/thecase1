@@ -107,11 +107,15 @@ public class AdvertisementEditScreen extends Screen implements Launchable {
     }
 
     private void pickUser() {
-        var ep = new EntityPicker<User>(container, "Kies gebruiker",
-                userIO,
-                new UserDao(getEntityManager()),
-                Launchable.NEEDSLOGIN,
-                Launchable.NEEDSADMIN);
+
+        EntityPicker<User> ep = new EntityPicker.Builder(container)
+                .withDao(new UserDao(getEntityManager()))
+                .withUserIO(userIO)
+                .withTitle("Kies gebruiker")
+                .needsLogin(Launchable.NEEDSLOGIN)
+                .needsAdmin(Launchable.NEEDSADMIN)
+                .build();
+
         if (launch(ep) && ep.hasPicked()) {
             // update user
             User u = ep.getPicked();

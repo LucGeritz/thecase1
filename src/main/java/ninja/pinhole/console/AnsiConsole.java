@@ -31,8 +31,9 @@ public class AnsiConsole implements UserIO {
     public void printTitle(int width, String title, String user) {
         user = "│ ".concat(user);
         int restWidth = width - title.length() - user.length() - 2; // -2 for margins of 1 space
-        printString(new Attrib[]{Attrib.FGWHITE, Attrib.BGCYAN, Attrib.BOLD},
+        printString(new Attrib[]{Attrib.FGWHITE, Attrib.BGRED, Attrib.BOLD},
                 " " + title + " ".repeat(restWidth) + user + " ");
+        System.out.println();
     }
 
     @Override
@@ -40,10 +41,12 @@ public class AnsiConsole implements UserIO {
         // Nothing seems to work, known compatibility problem ANSI-W8
         // @see https://stackoverflow.com/questions/2979383/java-clear-the-console
         // so I'll just use this very dirty hack, print a lot of backspaces..
-        for (int i = 0; i < 10000; i++) {
-            System.out.println("\b");
-        }
-        // And cursor-home doesn't work either
+//        for (int i = 0; i < 10000; i++) {
+//            System.out.println("\b");
+//        }
+//        // And cursor-home doesn't work either
+        System.out.print("\033[H\033[2J");
+
     }
 
     @Override

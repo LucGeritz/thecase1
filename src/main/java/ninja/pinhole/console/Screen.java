@@ -11,10 +11,10 @@ import java.util.TreeMap;
 public abstract class Screen {
 
     protected UserIO userIO;
-    protected final int screenWidth = 40;
+    protected final int screenWidth = 70;
     protected String generalMsg;
     protected Map<String, Option> options = new TreeMap<>();
-    private String title;
+    protected String title;
 
     protected Container container;
     private LoginService lis;
@@ -51,7 +51,7 @@ public abstract class Screen {
      */
     private void displayMenu() {
 
-        // printer.clear();
+        userIO.clear();
 
         userIO.printTitle(this.screenWidth, this.title,
                 lis.isLoggedIn() ? lis.getCurrentUserAlias() : "gast");

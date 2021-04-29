@@ -25,11 +25,6 @@ public class Service extends Advertisement implements AdvertisementCategory {
     }
 
     @Override
-    public Class getEnumClass() {
-        return ProductCategory.class;
-    }
-
-    @Override
     public Iterable getEnumItems() {
         return Arrays.asList(ServiceCategory.values());
     }
