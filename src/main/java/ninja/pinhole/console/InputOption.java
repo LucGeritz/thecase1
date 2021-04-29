@@ -6,15 +6,16 @@ package ninja.pinhole.console;
  */
 public class InputOption extends Option {
     private UserIO userIO;
+
     public InputOption(String id, String name, UserIO userIO) {
         super(id, name);
         this.userIO = userIO;
     }
 
-    @Override
     /**
      * If a InputOption is picked we'll ask the user for an input
      */
+    @Override
     protected void afterPick() {
         userIO.printInfo("Geef waarde voor " + this.getName() + " ");
         this.setValue(userIO.get());

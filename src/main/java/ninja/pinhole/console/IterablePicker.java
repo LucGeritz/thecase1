@@ -6,6 +6,9 @@ import ninja.pinhole.services.Launchable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * An IterablePicker is a screen where the items of an iterable become menu options.
+ */
 public class IterablePicker extends Screen implements Launchable {
 
     private Option pickedOption;
@@ -22,21 +25,6 @@ public class IterablePicker extends Screen implements Launchable {
         // If choice was not exit then store the entity picked for retrieval by caller
         pickedOption = picked;
 
-    }
-
-    private Map<String, Option> getOptions(Iterable rawOptions) {
-
-        Map<String, Option> options = new HashMap<>();
-
-        Integer i = 0;
-        for (Object rawOption : rawOptions) {
-            options.put(i.toString(), new Option(i.toString(), rawOption.toString()));
-            i++;
-        }
-
-        options.put("x", new Option("x", "Exit"));
-
-        return options;
     }
 
     public Option getPickedOption() {
@@ -63,4 +51,20 @@ public class IterablePicker extends Screen implements Launchable {
     public void launch() {
         show();
     }
+
+    private Map<String, Option> getOptions(Iterable rawOptions) {
+
+        Map<String, Option> options = new HashMap<>();
+
+        Integer i = 0;
+        for (Object rawOption : rawOptions) {
+            options.put(i.toString(), new Option(i.toString(), rawOption.toString()));
+            i++;
+        }
+
+        options.put("x", new Option("x", "Exit"));
+
+        return options;
+    }
+
 }

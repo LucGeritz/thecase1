@@ -1,6 +1,9 @@
 package ninja.pinhole.console;
 
-// ESC is \033
+/**
+ * Attrib enumerates Ansi-attributes as character sequences
+ * Note: ESC is \033
+ */
 public enum Attrib {
     FGBLACK("[30m"),
     FGRED("\033[31m"),

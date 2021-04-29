@@ -11,7 +11,6 @@ public class Option {
     private String message;
     private boolean secret = false;
 
-
     protected Option(String id, String name, String message) {
         this.id = id;
         this.name = name;
@@ -28,15 +27,8 @@ public class Option {
     }
 
     /**
-     * Default implementation og getString returns empty string
-     * Descendants can override this
-     *
-     * @return ""
+     * If secret is true the value of the option is shown as ***
      */
-    protected void afterPick() {
-
-    }
-
     public Option setSecret() {
         this.secret = true;
         return this;
@@ -83,6 +75,12 @@ public class Option {
     public String getMessage() {
         return message;
     }
+
+    /**
+     * Default implementation of afterPick does nothing.
+     * Descendants can override this
+     */
+    protected void afterPick() {}
 
 }
 
