@@ -1,11 +1,9 @@
 package ninja.pinhole.screens;
 
 import ninja.pinhole.console.AutoConsole;
-import ninja.pinhole.model.AdvertisementDao;
-import ninja.pinhole.model.User;
-import ninja.pinhole.model.UserDao;
 import ninja.pinhole.services.Container;
 import ninja.pinhole.services.LoginService;
+import ninja.pinhole.utility.DbFiller;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,11 +13,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
 
-class LoginScreenE2E {
+class LoggingInAndOutE2E {
 
     private static final int initialReccount = 10;
     private static Container container;
-    private static final int waitTime = 2000; // milliseconds
+    private static final int waitTime = 0; // milliseconds
 
     @BeforeAll
     static void init() {
@@ -38,7 +36,7 @@ class LoginScreenE2E {
                 )
         );
 
-        initDB();
+        new DbFiller().fill(container.get("em"));
 
     }
 
@@ -52,7 +50,7 @@ class LoginScreenE2E {
         // given: user not logged in
 
         // when: user logs in with valid vredentials
-        AutoConsole console = setupLoginBuffer("user2", "geheim2");
+        AutoConsole console = setupLoginBuffer("admin", "admin");
         MainScreen ms = new MainScreen(container, console);
         LoginService lis = container.get("lis");
         Assertions.assertThat(lis.isLoggedIn()).isFalse();
@@ -60,13 +58,13 @@ class LoginScreenE2E {
 
         // then: user is logged in
         Assertions.assertThat(lis.isLoggedIn()).isTrue();
-        Assertions.assertThat(lis.getCurrentUserAlias()).isEqualTo("user2");
+        Assertions.assertThat(lis.getCurrentUserAlias()).isEqualTo("admin");
     }
 
     @Test
     void WhenUserLogsInWithInvalidCredentialsThenUserIsNotLoggedIn() {
 
-        AutoConsole console = setupLoginBuffer("user2", "wrong_pw");
+        AutoConsole console = setupLoginBuffer("admin", "wrong_pw");
         MainScreen ms = new MainScreen(container, console);
         // start flow
         ms.show();
@@ -78,7 +76,7 @@ class LoginScreenE2E {
         // given: user is logged out
 
         // when: user logs in with credentials of blocked user
-        AutoConsole console = setupLoginBuffer("user3", "geheim3");
+        AutoConsole console = setupLoginBuffer("betsy", "betsy");
         MainScreen ms = new MainScreen(container, console);
         ms.show();
 
@@ -91,7 +89,7 @@ class LoginScreenE2E {
 
         // given: user is logged in
         LoginService lis = container.get("lis");
-        lis.login("user1", "geheim1");
+        lis.login("rolph", "rolph");
         Assertions.assertThat(lis.isLoggedIn()).isTrue();
 
         // when: user logs out
@@ -125,27 +123,6 @@ class LoginScreenE2E {
                 .setWait(waitTime);
 
         return console;
-    }
-
-    private static void initDB() {
-        // This is not about adverts but still I have to remove
-        // them if any are there to remove all users!
-        new AdvertisementDao(container.get("em")).removeAll();
-
-        UserDao ud = new UserDao(container.get("em"));
-        ud.removeAll();
-        User u;
-
-        // user3/geheim3 is blocked!
-        for (var i = 0; i < initialReccount; i++) {
-            u = User.builder().alias("user" + i).isAdmin(true).email("j" + i + "@j.nl").password("geheim" + i).build();
-            switch (i) {
-                case 3:
-                    u.setBlocked(true);
-                    break;
-            }
-            ud.insert(u);
-        }
     }
 
 }

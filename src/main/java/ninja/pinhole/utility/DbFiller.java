@@ -7,17 +7,22 @@ import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DbFiller {
-    private static final EntityManager em = Persistence
-            .createEntityManagerFactory("MySQL-thecase")
-            .createEntityManager();
 
     /*
-    admin user          : admin / admin
-    blocked normal user : user2 / user2
+        admin user          : admin / admin
+        blocked normal user : betsy / betsy
      */
     public static void main(String[] args) {
+        new DbFiller().fill(Persistence
+                .createEntityManagerFactory("MySQL-thecase")
+                .createEntityManager()
+        );
+    }
+
+    public void fill(EntityManager em) {
 
         AdvertisementDao ad = new AdvertisementDao(em);
         UserDao ud = new UserDao(em);
@@ -58,19 +63,33 @@ public class DbFiller {
                 "Broodbakken", "Rashond", "Internet problemen"
         };
 
-        String descr = " is zo goed als nieuw. Zien is kopen!";
 
         int userCount = 0;
         for (String name : advNames) {
 
-            String longDescr = "Deze ".concat(name).concat(descr);
+            String descr = "";
+            switch (new Random().nextInt(4)) {
+                case 0:
+                    descr = " is zo goed als niew. Sien is kopen!";
+                    break;
+                case 1:
+                    descr = " hept altijd binnen gestaant";
+                    break;
+                case 2:
+                    descr = " gaat weg tegen elluk aanmerkelijk bod";
+                    break;
+                case 3:
+                    descr = " is ook vor op de kemping";
+                    break;
+            }
+            descr = "Deze ".concat(name).concat(descr);
             Advertisement a;
             if ((userCount % 2) == 0) {
                 // on evens let's create a product
                 a = Product.builder()
                         .category(ProductCategory.random())
                         .name(name)
-                        .description(longDescr)
+                        .description(descr)
                         .price(BigDecimal.valueOf(157.23))
                         .build();
             } else {
@@ -78,7 +97,7 @@ public class DbFiller {
                 a = Service.builder()
                         .category(ServiceCategory.random())
                         .name(name)
-                        .description(longDescr)
+                        .description(descr)
                         .price(BigDecimal.valueOf(157.23))
                         .build();
             }

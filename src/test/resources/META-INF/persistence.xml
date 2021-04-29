@@ -13,6 +13,8 @@
             foutmelding "Entity not mapped o.i.d -->
         <class>ninja.pinhole.model.User</class>
         <class>ninja.pinhole.model.Advertisement</class>
+        <class>ninja.pinhole.model.Product</class>
+        <class>ninja.pinhole.model.Service</class>
 
         <properties>
             <!-- onderstaande kan uit: wordt automatisch geladen, omdat mysql op classpath (in pom) staat. -->

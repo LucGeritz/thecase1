@@ -1,11 +1,11 @@
 package ninja.pinhole.screens;
 
 import ninja.pinhole.console.AutoConsole;
-import ninja.pinhole.model.AdvertisementDao;
 import ninja.pinhole.model.User;
 import ninja.pinhole.model.UserDao;
 import ninja.pinhole.services.Container;
 import ninja.pinhole.services.LoginService;
+import ninja.pinhole.utility.DbFiller;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +16,12 @@ import javax.persistence.Persistence;
 import java.util.HashMap;
 import java.util.Map;
 
-class UserScreenE2E {
+class BlockingUserE2E {
 
     private static final int initialReccount = 10;
     private static Container container;
     private static final int waitTime = 0; // milliseconds
-    private static Map<String, Long> alias2Id;
+    private static Map<String, Long> alias2Id = new HashMap<>();
 
     @BeforeAll
     static void init() {
@@ -40,14 +40,17 @@ class UserScreenE2E {
                 )
         );
 
-        initDB();
+        new DbFiller().fill(container.get("em"));
+
+        // make lookup table from alias to id
+        new UserDao(container.get("em")).findAll().forEach(user -> alias2Id.put(user.getAlias(), user.getId()));
 
     }
 
     @BeforeEach
     void setup() {
         // Always logged in as admin
-        container.<LoginService>get("lis").login("user1", "geheim1");
+        container.<LoginService>get("lis").login("admin", "admin");
     }
 
     @Test
@@ -58,14 +61,14 @@ class UserScreenE2E {
 
         AutoConsole console = setPathToBlockUserScreen();
 
-        // block user 4
-        long id = alias2Id.get("user4").longValue();
+
+        long id = alias2Id.get("rolph").longValue();
 
         User u = getUser(id);
         // user has to be initially unblocked to make this test useful
         Assertions.assertThat(u.isBlocked()).isFalse();
 
-        console.buffer(id+"")
+        console.buffer(id + "")
                 .buffer("x") // exit user screen
                 .buffer("x"); // exit main screen
         // go!
@@ -75,6 +78,7 @@ class UserScreenE2E {
         u = getUser(id);
         Assertions.assertThat(u.isBlocked()).isTrue();
     }
+
     @Test
     void WhenAdminBlocksBlockedUserThenUserIsUnblocked() {
 
@@ -83,16 +87,17 @@ class UserScreenE2E {
 
         AutoConsole console = setPathToBlockUserScreen();
 
-        // unblock user 5
-        long id = alias2Id.get("user5").longValue();
-
+        // remember id blocked user
+        long id = alias2Id.get("betsy");
         User u = getUser(id);
+
         // user has to be initially blocked to make this test useful
         Assertions.assertThat(u.isBlocked()).isTrue();
 
-        console.buffer(id+"")
+        console.buffer(id + "")
                 .buffer("x") // exit user screen
                 .buffer("x"); // exit main screen
+
         // go!
         new MainScreen(container, console).show();
 
@@ -111,35 +116,8 @@ class UserScreenE2E {
         return console;
     }
 
-    private User getUser(long id){
+    private User getUser(long id) {
         return new UserDao(container.get("em")).find(id);
     }
 
-    private static void initDB() {
-
-        // This is not about adverts but still I have to remove
-        // them if any are there to remove all users!
-        new AdvertisementDao(container.get("em")).removeAll();
-
-        UserDao ud = new UserDao(container.get("em"));
-        ud.removeAll();
-
-        alias2Id = new HashMap<String, Long>();
-
-        // user1/geheim1 is admin
-        // user5/geheim5 is blocked!
-        for (var i = 0; i < initialReccount; i++) {
-            User u = User.builder().alias("user" + i).email("j" + i + "@j.nl").password("geheim" + i).build();
-            switch (i) {
-                case 1:
-                    u.setAdmin(true);
-                    break;
-                case 5:
-                    u.setBlocked(true);
-                    break;
-            }
-            ud.insert(u);
-            alias2Id.put(u.getAlias(), u.getId());
-        }
-    }
 }
