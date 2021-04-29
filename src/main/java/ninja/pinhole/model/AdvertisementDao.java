@@ -50,6 +50,12 @@ public class AdvertisementDao implements Dao<Advertisement>{
         em.getTransaction().commit();
     }
 
+    public void delete(Advertisement p) {
+        em.getTransaction().begin();
+        em.remove(p);
+        em.getTransaction().commit();
+    }
+
     public Advertisement find(long id){
         List<Advertisement> pp = em.createNamedQuery("Adv.findById", Advertisement.class)
                 .setParameter("id", id)

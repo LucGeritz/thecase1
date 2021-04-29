@@ -41,7 +41,7 @@ public class AdvertisementScreen extends Screen implements Launchable {
                     generalMsg = "Nog niet geïmplementeerd";
                     break;
                 case optionDelete:
-                    generalMsg = "Nog niet geïmplementeerd";
+                    deleteAdvert();
                     break;
                 case optionEdit:
                     editAdvert();
@@ -81,12 +81,6 @@ public class AdvertisementScreen extends Screen implements Launchable {
      */
     private void editAdvert() {
 
-//        var ep = new EntityPicker<Advertisement>(container,"Kies advertentie",
-//                userIO,
-//                new AdvertisementDao(container.<EntityManager>get("em")),
-//                Launchable.NEEDSLOGIN,
-//                Launchable.NEEDSADMIN);
-
         var ep = new EntityPicker.Builder<Advertisement>(container)
                 .withUserIO(userIO)
                 .withTitle("Kies advertentie")
@@ -97,6 +91,22 @@ public class AdvertisementScreen extends Screen implements Launchable {
 
         if (launch(ep) && ep.hasPicked()) {
             launch(new AdvertisementEditScreen(container, userIO, (Advertisement) ep.getPicked()));
+        }
+    }
+
+    private void deleteAdvert() {
+
+        // @todo reuse entitypicker
+        var ep = new EntityPicker.Builder<Advertisement>(container)
+                .withUserIO(userIO)
+                .withTitle("Verwijder advertentie !!")
+                .withDao(new AdvertisementDao(container.<EntityManager>get("em")))
+                .needsAdmin(Launchable.NEEDSADMIN)
+                .needsLogin(Launchable.NEEDSLOGIN)
+                .build();
+
+        if (launch(ep) && ep.hasPicked()) {
+            new AdvertisementDao(container.<EntityManager>get("em")).delete((Advertisement) ep.getPicked());
         }
     }
 }

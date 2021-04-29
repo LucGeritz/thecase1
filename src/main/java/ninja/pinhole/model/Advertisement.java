@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Adv.findById", query = "SELECT a FROM Advertisement a WHERE a.id = :id"),
+        @NamedQuery(name = "Adv.delById", query = "DELETE FROM Advertisement a WHERE a.id = :id"),
         @NamedQuery(name = "Adv.findByName", query = "SELECT a FROM Advertisement a WHERE a.name = :name"),
 })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
