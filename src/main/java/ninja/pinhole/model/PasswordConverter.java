@@ -27,7 +27,6 @@ public class PasswordConverter implements AttributeConverter<String, String> {
         StringBuilder sb = new StringBuilder();
 
         for(int i = 0; i < s.length(); i++) {
-            // sb.append((char) (s.charAt(i) ^ (char) 255));
             sb.append((char) (s.charAt(i) ^ secret.charAt(i % secret.length())));
         }
 
