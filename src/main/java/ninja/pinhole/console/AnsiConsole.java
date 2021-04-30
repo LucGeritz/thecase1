@@ -38,13 +38,7 @@ public class AnsiConsole implements UserIO {
 
     @Override
     public void clear() {
-        // Nothing seems to work, known compatibility problem ANSI-W8
-        // @see https://stackoverflow.com/questions/2979383/java-clear-the-console
-        // so I'll just use this very dirty hack, print a lot of backspaces..
-//        for (int i = 0; i < 10000; i++) {
-//            System.out.println("\b");
-//        }
-//        // And cursor-home doesn't work either
+
         System.out.print("\033[H\033[2J");
 
     }

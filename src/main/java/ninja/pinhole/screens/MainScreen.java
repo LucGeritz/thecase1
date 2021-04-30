@@ -19,7 +19,7 @@ public class MainScreen extends Screen {
     private LoginScreen ls;
 
     public MainScreen(Container container, UserIO userIO) {
-        super(container, "Welkom!", userIO);
+        super(container, "Beheer Markplaats", userIO);
         this.options = getOptions();
     }
 

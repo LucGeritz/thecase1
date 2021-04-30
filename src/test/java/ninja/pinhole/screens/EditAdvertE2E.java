@@ -22,7 +22,7 @@ class EditAdvertE2E {
 
     private static final int initialReccount = 10;
     private static Container container;
-    private static final int waitTime = 2000; // milliseconds
+    private static final int waitTime = 0; // milliseconds
     private static Map<String, Long> name2Id = new HashMap<>();
 
     @BeforeAll
