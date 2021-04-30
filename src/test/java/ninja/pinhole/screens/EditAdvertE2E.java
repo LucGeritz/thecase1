@@ -1,6 +1,7 @@
 package ninja.pinhole.screens;
 
 import ninja.pinhole.console.AutoConsole;
+import ninja.pinhole.console.ReadonlyConsole;
 import ninja.pinhole.model.Advertisement;
 import ninja.pinhole.model.AdvertisementDao;
 import ninja.pinhole.model.Product;
@@ -67,11 +68,10 @@ class EditAdvertE2E {
         // Must be logged in!
         Assertions.assertThat(container.<LoginService>get("lis").isLoggedIn()).isTrue();
 
-        AutoConsole console = setPathToEditAdvertScreen();
+        var console = setPathToEditAdvertScreen(new ReadonlyConsole());
 
         // remember id oma fiets (product)
         long id = name2Id.get("Oma fiets").longValue();
-
 
         console.buffer(id + "") // pick oma fiets
                 .buffer("1") // pick field "naam"
@@ -102,9 +102,7 @@ class EditAdvertE2E {
         Assertions.assertThat(user.getAlias()).isEqualTo("rolph");
     }
 
-    private AutoConsole setPathToEditAdvertScreen() {
-        AutoConsole console = new AutoConsole();
-
+    private AutoConsole  setPathToEditAdvertScreen(AutoConsole console ) {
         console.buffer("2") // pick advert screen
                 .buffer("2") // pick edit screen
                 .setWait(waitTime);
