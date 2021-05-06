@@ -11,9 +11,14 @@ public class Launcher {
 
     private String errorMsg;
     private LoginService lis;
+    private Launchable program;
 
     public Launcher(LoginService lis){
         this.lis = lis;
+    }
+    public Launcher(Launchable program, LoginService lis){
+        this(lis);
+        this.program = program;
     }
 
     /**
@@ -48,6 +53,10 @@ public class Launcher {
         program.launch();
 
         return this;
+    }
+
+    public Launcher launch() {
+        return launch(this.program);
     }
 
     /**
